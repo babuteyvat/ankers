@@ -1,0 +1,2 @@
+# ankers
+make flashcardssz
