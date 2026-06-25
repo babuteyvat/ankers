@@ -1,2 +1,7 @@
 # ankers
-make flashcardssz
+
+make flashcards
+
+
+big pp
+
