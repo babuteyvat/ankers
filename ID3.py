@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
-
+#code
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
