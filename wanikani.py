@@ -11,7 +11,6 @@ word = [
     (("こんにちは"), ("Good afternoon")),
     (("こんばんは"), ("Good evening")),
     (("はじめまして"), ("Nice to meet you")),
-    (("おやすみなさい"), ("Good night"))
 ]
 count = len(word)
 
