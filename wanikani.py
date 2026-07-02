@@ -15,8 +15,8 @@ word = [
 count = len(word)
 
 def next():
-    global randWord
     randWord = randint(0,count-1)
+    global randWord
 
     jpnWord.config(text=word[randWord][0])
 

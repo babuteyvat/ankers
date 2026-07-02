@@ -1,0 +1,52 @@
+{
+  "cards": [
+    {
+      "id": "1",
+      "prompt": "おはようございます",
+      "answer": "Good morning",
+      "state": "learning",
+      "step": 2,
+      "history": [
+        true
+      ],
+      "next_review_day": 0
+    },
+    {
+      "id": "2",
+      "prompt": "こんにちは",
+      "answer": "Good afternoon",
+      "state": "review",
+      "step": 0,
+      "history": [],
+      "next_review_day": 7
+    },
+    {
+      "id": "3",
+      "prompt": "こんばんは",
+      "answer": "Good evening",
+      "state": "learning",
+      "step": 1,
+      "history": [],
+      "next_review_day": 0
+    },
+    {
+      "id": "4",
+      "prompt": "はじめまして",
+      "answer": "Nice to meet you",
+      "state": "learning",
+      "step": 1,
+      "history": [],
+      "next_review_day": 0
+    },
+    {
+      "id": "5",
+      "prompt": "ありがとうございます",
+      "answer": "Thank you",
+      "state": "learning",
+      "step": 1,
+      "history": [],
+      "next_review_day": 0
+    }
+  ],
+  "current_day": 0
+}
