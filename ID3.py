@@ -1,24 +1,41 @@
-import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
+from nicegui import ui
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setGeometry(700, 300, 1400, 1000)
-        self.initUI()
+flashcards = [
+    {"q": "What is the capital of Japan?", "a": "Tokyo"},
+    {"q": "What is the Japanese word for 'Thank you'?", "a": "Arigatou"},
+    {"q": "What is $5 \\times 5$?", "a": "25"}
+]
 
-    def initUI(self):
-        easy_button = QPushButton("Easy", self)
-        easy_button.setGeometry(1000, 200, 300, 150)
-        good_button = QPushButton("Good", self)
-        good_button.setGeometry(700, 200, 300, 150)
-        hard_button = QPushButton("Hard", self)
-        hard_button.setGeometry(400, 200, 300, 150)
-        again_button = QPushButton("Again", self)
-        again_button.setGeometry(100, 200, 300, 150)
+current_index = 0
+is_flipped = False
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
+def next_card():
+    global current_index
+    current_index += 1
+    if current_index != len(flashcards):
+         card_text.set_text(flashcards[current_index]["q"])
+    else:
+        ui.notify('done')
+
+def flip_card():
+    global is_flipped
+    is_flipped = not is_flipped
+    if is_flipped:
+        card_text.set_text(flashcards[current_index]["a"])
+    else:
+        card_text.set_text(flashcards[current_index]["q"])
+
+with ui.column().classes('items-center w-full q-pa-md'):
+    ui.label("Anki").classes('text-h4 q-mb-md')
+    
+    with ui.card().classes('w-96 h-64 flex flex-center cursor-pointer q-mb-md').on('click', flip_card):
+        card_text = ui.label(flashcards[current_index]["q"]).classes('text-h5 text-center')
+    with ui.row().classes('q-gutter-md'):
+        ui.button("Easy", on_click= next_card)
+        ui.button("Good", on_click=lambda: ui.notify('e'))
+        ui.button("Hard", on_click=lambda: ui.notify('we'))
+        ui.button("Again", on_click=lambda: ui.notify('wee'))
+
+ui.run()
+
+
