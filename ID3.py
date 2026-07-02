@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from nicegui import ui
 
 flashcards = [
@@ -37,5 +38,15 @@ with ui.column().classes('items-center w-full q-pa-md'):
         ui.button("Again", on_click=lambda: ui.notify('wee'))
 
 ui.run()
+=======
+import sys
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QLabel
+#code
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setGeometry(700, 300, 1400, 1000)
+        self.initUI()
+>>>>>>> a24acd3fc194a4101931d9af85196661a8342d82
 
 
