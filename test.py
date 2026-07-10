@@ -8,3 +8,5 @@ class PP(object):
 
 p = PP(19, "buy", 2)
 p.data()
+
+#dkqp
