@@ -214,7 +214,7 @@ class Session():
 
     def review_check(self):
         card_list = list(self.queue[self.current_index])
-        if card_list[3] == "reviewing":
+        if card_list[3] == "reviewing" and card_list[5] == 0:
             if card_list[6] == 0:
                 card_list[5] = 1
             elif card_list[6] == 1:
