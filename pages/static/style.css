@@ -1,0 +1,63 @@
+/* Hide the native toggle chevron icon completely */
+.q-expansion-item__toggle-icon {
+    display: none !important;
+}
+
+/* Enforce layout padding styles across list trees */
+.q-expansion-item__container .q-item {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    min-height: 36px !important;
+}
+
+/* Keep expansion items structured correctly, but remove the hover background color completely */
+.q-expansion-item .q-item {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    min-height: 36px !important;
+    background-color: transparent !important;
+}
+.q-expansion-item .q-item:hover {
+    background-color: transparent !important;
+}
+
+/* Completely nuke the hover background and focus highlight on expansion headers */
+.q-expansion-item .q-hoverable:hover > .q-focus-helper {
+    background-color: transparent !important;
+    opacity: 0 !important;
+}
+
+/* Hide settings icon by default */
+.deck-container .deck-settings-btn {
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+    pointer-events: none;
+}
+
+/* Display settings icon cleanly on hover over the layout container */
+.deck-container:hover .deck-settings-btn {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Completely strip background and click effects on deck settings buttons */
+.deck-settings-btn, .deck-settings-btn:hover, .deck-settings-btn:focus, .deck-settings-btn:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+.deck-settings-btn .q-focus-helper,
+.deck-settings-btn .q-ripple {
+    display: none !important;
+}
+
+/* Pure CSS rule to create beautifully spaced out sketchy lines */
+.sketch-dotted-btn {
+    border: 1.5px dashed rgba(100, 116, 139, 0.4) !important;
+    background-color: transparent !important;
+    transition: all 0.2s ease-in-out;
+}
+.sketch-dotted-btn:hover {
+    border-color: rgba(100, 116, 139, 0.8) !important;
+    background-color: rgba(226, 232, 240, 0.4) !important;
+}
+
