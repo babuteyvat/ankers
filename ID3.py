@@ -1,6 +1,8 @@
 from nicegui import ui
 import sqlite3
 from random import shuffle
+from datetime import date
+import atexit
 
 conn = sqlite3.connect(':memory:')
 
@@ -33,7 +35,74 @@ with conn:
     )
     """)
 
-#c.executemany("INSERT OR IGNORE INTO flashcard VALUES (?, ?, ?, ?, ?, ?, ?)", flashcards_def)
+#deckmaker starts here
+c.execute("CREATE TABLE IF NOT EXISTS deckstats(name TEXT)")
+#run on startup
+
+deckname = "deck1"
+#variable to name deck
+
+class Deckmaker():
+    def __init__(self, deckname):
+        self.deckname = deckname
+    def createdeck(self):
+        c.execute(f"""CREATE TABLE IF NOT EXISTS
+        {self.deckname}(id INTEGER,
+        question TEXT,
+        answer TEXT,
+        state TEXT,
+        step INTEGER,
+        days_till_review INTEGER,
+        review_count INTEGER)""")
+#function that creates deck based on deckname variable. Prolly wanna make input prompt that changes deckname when making card maker layout
+
+    def createcard(self, q, a):
+        deckIDs = c.execute(f"SELECT id from {deckname}")
+        idvalue = len(deckIDs.fetchall()) + 1
+        c.execute(f"INSERT INTO {deckname} VALUES(?, ?, ?, 'learning', 0, 0, 0)", (idvalue, q, a))
+        c.commit()
+#function to create card and add to selected deck. Ideally the input prompts have some sort of check to confirm uploadable data types.
+#The first input variable is the name of the deck. Each subsequent variable is for a key in the dictionary. Note that they're being
+#made into a database.
+
+    def upload(self):
+        for row in c.execute(f"SELECT question, answer, state, step, days_till_review, review_count FROM {self.deckname}"):
+            newID = len(flashcards_def) + 1
+            flashcards_def.append({"id": newID, "q": row[0], "a": [1], "state": row[2], "step": row[3], "days_till_review": row[4], "review_count": row[5]})
+#FOR UPLOADING TO CARD POOL. Run this function with table name in database.
+
+lessons_tally = 0
+reviews_tally = 0
+#FIND WAY TO IMPLEMENT IN MAIN FUNCTION.
+
+def calldate():
+    c.execute("""CREATE TABLE IF NOT EXISTS
+    heatmaptable(index INTEGER,
+    date INTEGER,
+    month INTEGER,
+    year INTEGER
+    lessons_done INTEGER,
+    reveiws_done INTEGER,
+    streak INTEGER)""")
+    today = date.today()
+    date = today.day
+    month = today.month
+    year = today.year
+    dmy = c.execute("SELECT * FROM heatmaptable ORDER BY index DESCEND LIMIT 1")
+    if dmy[0] == (date - 1 and dmy[1] == month and dmy[2] == year) or (dmy[0] == 1 and dmy[1] == month - 1 and dmy[2] == year) or (dmy[0] == 1 and dmy[1] == 1 and dmy[2] == year - 1):
+        streak = 0
+    else:
+        streak = 1    
+    c.execute("DELETE FROM heatmaptable WHERE date = ? AND month = ? AND year = ?", (date, month, year))
+    c.execute("INSERT INTO heatmaptable VALUES(?, ?, ?, ?, ?, ?)", (date, month, year, lessons_tally, reviews_tally, streak))
+    conn.commit()
+
+atexit.register(calldate)
+
+
+#retrieves date and lessons/reviews tally to track on heatmap. Runs on exiting the program.
+
+c.executemany("INSERT OR IGNORE INTO flashcard VALUES (?, ?, ?, ?, ?, ?, ?)", flashcards_def)
 
 class Card_Manager():
     def __init__(self):
@@ -215,6 +284,8 @@ class Session():
     def review_check(self):
         card_list = list(self.queue[self.current_index])
         if card_list[3] == "reviewing" and card_list[5] == 0:
+            global review_tally
+            review_tally += 1
             if card_list[6] == 0:
                 card_list[5] = 1
             elif card_list[6] == 1:
@@ -229,7 +300,9 @@ class Session():
                 card_list[5] = 28
             elif card_list[6] == 6:
                 card_list[5] = 56
-        
+        else:
+            global lessons_tally
+            lessons_tally += 1
         # normally grade_difficulty would have an additional factor "ease" factor to make it more retainable but for
         # presentation purposes, it will only use this part just to show that the deck is working
 
